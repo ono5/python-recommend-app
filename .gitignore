@@ -1,3 +1,5 @@
 Python.pdf
 env
 appserver.log
+__pycache__
+appserver.sql

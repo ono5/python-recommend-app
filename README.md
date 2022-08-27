@@ -21,4 +21,14 @@ pip install -r requirements.txt
 ```
 $ brew install sqlite3
 $ sqlite3
+
+$ sqlite3 appserver.sql
+sqlite> .tables
+user
+sqlite> select * from user;
+1|test|2022-08-27 04:36:04.304734|2022-08-27 04:36:04.304745
 ```
+
+
+## SQL Alchemy
+https://www.sqlalchemy.org/
