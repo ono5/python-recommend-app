@@ -23,3 +23,12 @@ def hello() -> str:
         return render_template("evaluate_restaurant.html", user_name=user_name)
 
     return render_template("hello.html", name=ROBOT_NAME)
+
+
+@app.route("/restaurant/rate", methods=["GET", "POST"])
+def restaurant_rate() -> str:
+    if request.method == "POST":
+        user_name = request.form.get("user_name").strip()
+        rate = request.form.get("rate").strip()
+        restaurant = request.form.get("restaurant").strip()
+        return render_template("good_bye.html", user_name=user_name)
