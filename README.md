@@ -9,3 +9,16 @@ $ pip3 install --upgrade pip
 $ pip3 install virtualenv
 $ python3 -m virtualenv env
 ```
+
+## Module Install
+
+```
+pip install -r requirements.txt
+```
+
+## Install SQLite
+
+```
+$ brew install sqlite3
+$ sqlite3
+```
