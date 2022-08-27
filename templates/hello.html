@@ -4,17 +4,18 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Roboter 2</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}" />
 </head>
 
 <body>
 	<div class="display">
 		Hello! My name is {{ name }}. Who are you?
+		<br>
+		<form action="/" method="post">
+			<input type="text" name="user_name" size="30" />
+			<input type="submit"  vallue="Submit" />
+		</form>
 	</div>
-	<br>
-	<form action="/" method="post">
-		<input type="text" name="user_name" size="30" />
-		<input type="submit"  vallue="Submit" />
-	</form>
 </body>
 
 </html>

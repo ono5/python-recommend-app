@@ -2,7 +2,8 @@ from flask import Flask, redirect, render_template, request, url_for
 
 import settings
 
-app = Flask(__name__, template_folder='../../templates')
+app = Flask(__name__, template_folder=settings.TEMPLATE_FOLDER,
+            static_folder=settings.STATIC_FOLDER)
 
 
 class WebServer(object):
