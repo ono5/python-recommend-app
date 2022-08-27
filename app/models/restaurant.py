@@ -3,7 +3,7 @@ from sqlalchemy import Column, String, UniqueConstraint
 from app.models.db import BaseDatabase
 
 
-class User(BaseDatabase):
-    __tablename__ = 'user'
+class Restaurant(BaseDatabase):
+    __tablename__ = 'restaurant'
     name = Column(String)
     UniqueConstraint(name)
