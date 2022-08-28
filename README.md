@@ -38,3 +38,8 @@ sqlite> .exit
 
 ## SQL Alchemy
 https://www.sqlalchemy.org/
+
+## Machine Learning
+
+### Surprise
+[Surprise](https://surpriselib.com/)
