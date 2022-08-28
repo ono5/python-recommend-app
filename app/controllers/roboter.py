@@ -1,11 +1,12 @@
 from typing import Union
-from flask import Flask, render_template, request, url_for, redirect
 
-from app.controllers.forms import RateForm, YesOrNoForm
-from app.models.user import User
-from app.models.restaurant import Restaurant
-from app.models.rate import Rate
+from flask import Flask, redirect, render_template, request, url_for
+
 import settings
+from app.controllers.forms import RateForm, YesOrNoForm
+from app.models.rate import Rate
+from app.models.restaurant import Restaurant
+from app.models.user import User
 
 app = Flask(__name__, template_folder=settings.TEMPLATE_FOLDER,
             static_folder=settings.STATIC_FOLDER)

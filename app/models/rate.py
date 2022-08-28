@@ -1,14 +1,14 @@
 import logging
-from sqlalchemy import Column, Integer,  UniqueConstraint, ForeignKey
 
 import pandas as pd
+from sqlalchemy import Column, ForeignKey, Integer, UniqueConstraint
 from surprise import SVD, Dataset, NormalPredictor, Reader
 from surprise.model_selection import cross_validate
 
 import settings
 from app.models.db import BaseDatabase, database
-from app.models.user import User
 from app.models.restaurant import Restaurant
+from app.models.user import User
 
 logger = logging.getLogger(__name__)
 

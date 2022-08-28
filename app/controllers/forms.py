@@ -1,4 +1,5 @@
 from email.policy import default
+
 from wtforms import Form, HiddenField, RadioField, StringField
 from wtforms.validators import InputRequired, Length
 
