@@ -1,4 +1,5 @@
-from flask import Flask, redirect, render_template, request, url_for
+from typing import Union
+from flask import Flask, render_template, request, url_for, redirect
 
 from app.controllers.forms import RateForm, YesOrNoForm
 from app.models.user import User
@@ -25,7 +26,7 @@ def hello() -> str:
     if request.method == "POST":
         user_name = request.form.get("user_name").strip()
         user = User.get_or_create(user_name)
-        restaurants = Rate.recommend_restaurrant(user)
+        restaurants = Rate.recommend_restaurant(user)
         if restaurants:
             form = YesOrNoForm(request.form)
             form.user_name.data = user_name
@@ -39,7 +40,7 @@ def hello() -> str:
 
 
 @app.route("/restaurant/evaluate/status", methods=["GET", "POST"])
-def evaluate_yes_or_no():
+def evaluate_yes_or_no() -> str:
     if request.method == "POST":
         form = YesOrNoForm(request.form)
         user_name = form.user_name.data.strip()
@@ -49,10 +50,11 @@ def evaluate_yes_or_no():
         form = RateForm(request.form)
         form.user_name.data = user_name
         return render_template("evaluate_restaurant.html", user_name=user_name, form=form)
+    return redirect(url_for("hello"))
 
 
 @app.route("/restaurant/rate", methods=["GET", "POST"])
-def restaurant_rate() -> str:
+def restaurant_rate() -> Union[str, "Response"]:
     form = RateForm(request.form)
     if request.method == "POST":
         user_name = form.user_name.data.strip()
@@ -63,3 +65,4 @@ def restaurant_rate() -> str:
         Rate.update_or_create(user, restaurant, value)
 
         return render_template("good_bye.html", user_name=user_name)
+    return redirect(url_for("hello"))

@@ -1,16 +1,16 @@
-from multiprocessing.sharedctypes import Value
+import logging
 from sqlalchemy import Column, Integer,  UniqueConstraint, ForeignKey
 
-try:
-    import pandas as pd
-    from surprise import SVD, Dataset, NormalPredictor, Reader
-    from surprise.model_selection import cross_validate
-except ImportError:
-    pass
+import pandas as pd
+from surprise import SVD, Dataset, NormalPredictor, Reader
+from surprise.model_selection import cross_validate
 
 import settings
 from app.models.db import BaseDatabase, database
+from app.models.user import User
 from app.models.restaurant import Restaurant
+
+logger = logging.getLogger(__name__)
 
 
 class Rate(BaseDatabase):
@@ -22,7 +22,7 @@ class Rate(BaseDatabase):
     UniqueConstraint(user_id, restaurant_id)
 
     @staticmethod
-    def update_or_create(user, restaurant, value):
+    def update_or_create(user: User, restaurant: Restaurant, value: int) -> None:
         session = database.connect_db()
         rate = session.query(Rate).filter(
             Rate.user_id == user.id, Rate.restaurant_id == restaurant.id).first()
@@ -40,7 +40,15 @@ class Rate(BaseDatabase):
         session.close()
 
     @staticmethod
-    def recommend_restaurrant(user):
+    def recommend_restaurant(user: User) -> list:
+        """
+            Use machine learning to measure recommended restaurants and return the name of the recommend restaurants
+
+            Args:
+                user: User object you want to recommend
+
+            Returns: A list of recommended restaurant names
+        """
         if not settings.RECOMMEND_ENGINE_ENABLE:
             session = database.connect_db()
             recommend = [r.name for r in session.query(
@@ -64,6 +72,7 @@ class Rate(BaseDatabase):
             # データを評価する
             cross_validate(NormalPredictor(), data, cv=2)
         except ValueError as ex:
+            logger.error({"action": "recommend_restaurant", "error": ex})
             return None
 
         # ------------------------アルゴリズム生成
@@ -86,6 +95,8 @@ class Rate(BaseDatabase):
         predict_df = predict_df.drop_duplicates(subset=item_id)
 
         if predict_df is None:
+            logger.warning({"action": "recommend_restaurant",
+                           "status": "no predict data"})
             return []
 
         # ------------------------結果をリストにして返す
