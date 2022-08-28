@@ -1,6 +1,8 @@
 from sqlalchemy import Column, Integer,  UniqueConstraint, ForeignKey
 
 from app.models.db import BaseDatabase, database
+from app.models.restaurant import Restaurant
+import settings
 
 
 class Rate(BaseDatabase):
@@ -28,3 +30,12 @@ class Rate(BaseDatabase):
         session.add(rate)
         session.commit()
         session.close()
+
+    @staticmethod
+    def recommend_restaurrant(user):
+        if not settings.RECOMMEND_ENGINE_ENABLE:
+            session = database.connect_db()
+            recommend = [r.name for r in session.query(
+                Restaurant).all()][:settings.RECCOMEND_RESTAURANT_NUM]
+            session.close()
+            return recommend
