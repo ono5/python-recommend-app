@@ -35,8 +35,10 @@ def hello() -> str:
 
 @app.route("/restaurant/rate", methods=["GET", "POST"])
 def restaurant_rate() -> str:
+    form = RateForm(request.form)
     if request.method == "POST":
-        user_name = request.form.get("user_name").strip()
-        rate = request.form.get("rate").strip()
-        restaurant = request.form.get("restaurant").strip()
+        user_name = form.user_name.data.strip()
+        restaurant_name = form.restaurant.data.strip()
+        restaurant = Restaurant.get_or_create(restaurant_name)
+        rate = int(form.rate.data)
         return render_template("good_bye.html", user_name=user_name)
